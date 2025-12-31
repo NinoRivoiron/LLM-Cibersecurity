@@ -1,0 +1,429 @@
+{
+  "evalId": "eval-whj-2025-12-31T13:30:29",
+  "results": {
+    "version": 3,
+    "timestamp": "2025-12-31T13:30:29.055Z",
+    "prompts": [
+      {
+        "raw": "[{\"role\":\"system\",\"content\":\"You are a strict security auditor. You must analyze code for vulnerabilities (OWASP/CWE). Your output MUST be a single, raw JSON object. NO backticks, NO 'json' prefix, NO prose. If unsure or safe, set is_vuln to 'no'. Schema: {\\\"is_vuln\\\": \\\"yes\\\"|\\\"no\\\", \\\"cwe\\\": \\\"CWE-###\\\"|null, \\\"title\\\": \\\"string\\\", \\\"rationale\\\": \\\"string\\\"}\"},{\"role\":\"user\",\"content\":\"Analyze this code:\\n<<<\\n{{code}}\\n>>>\\n\\nRespond with the JSON object only:\"}]",
+        "label": "prompts/secure_review_chat.json: [{\"role\":\"system\",\"content\":\"You are a strict security auditor. You must analyze code for vulnerabilities (OWASP/CWE). Your output MUST be a single, raw JSON object. NO backticks, NO 'json' prefix, NO prose. If unsure or safe, set is_vuln to 'no'. Schema: {\\\"is_vuln\\\": \\\"yes\\\"|\\\"no\\\", \\\"cwe\\\": \\\"CWE-###\\\"|null, \\\"title\\\": \\\"string\\\", \\\"rationale\\\": \\\"string\\\"}\"},{\"role\":\"user\",\"content\":\"Analyze this code:\\n<<<\\n{{code}}\\n>>>\\n\\nRespond with the JSON object only:\"}]",
+        "id": "fb6dffcaa06084edb7cd81743d883e0a4ac38b7c48df64991c8a25b4cc7cddfe",
+        "provider": "gemini-batch-free",
+        "metrics": {
+          "score": 2,
+          "testPassCount": 2,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 4,
+          "assertFailCount": 0,
+          "totalLatencyMs": 5510,
+          "tokenUsage": {
+            "prompt": 289,
+            "completion": 210,
+            "cached": 0,
+            "total": 1166,
+            "numRequests": 2,
+            "completionDetails": {
+              "reasoning": 667,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {
+            "accuracy": 2
+          },
+          "namedScoresCount": {
+            "accuracy": 2
+          },
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {
+            "accuracy": 1
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "✅ Correct classification: no (CWE: N/A)",
+              "metadata": {
+                "renderedAssertionValue": "const expected = 'no';\nconst obj = typeof output === 'string' ? JSON.parse(output) : output;\nlet actual = obj.is_vuln;\n\nif (actual === undefined && typeof obj.is_vulnerable === 'boolean') {\n  actual = obj.is_vulnerable ? 'yes' : 'no';\n} else if (actual === undefined && typeof obj.is_vulnerable === 'string') {\n  const v = obj.is_vulnerable.toLowerCase();\n  if (v.includes('yes') || v.includes('true')) actual = 'yes';\n  if (v.includes('no')  || v.includes('false')) actual = 'no';\n}\n\n// Enhanced feedback with detailed error message\nif (actual === expected) {\n  return {\n    pass: true,\n    score: 1,\n    reason: `✅ Correct classification: ${actual} (CWE: ${obj.cwe || 'N/A'})`\n  };\n} else {\n  return {\n    pass: false,\n    score: 0,\n    reason: `❌ WRONG: Expected \"${expected}\" but got \"${actual}\"\\n` +\n            `   Model said: ${obj.title || 'N/A'}\\n` +\n            `   Rationale: ${obj.rationale?.substring(0, 150) || 'N/A'}...\\n` +\n            `   CWE: ${obj.cwe || 'none detected'}\\n` +\n            `   💡 FIX: Review prompt or provide better examples for this vulnerability type`\n  };\n}\n"
+              }
+            }
+          ]
+        },
+        "id": "d525791b-2f5c-4158-9d7a-210bafe74b0c",
+        "latencyMs": 2663,
+        "namedScores": {
+          "accuracy": 1
+        },
+        "prompt": {
+          "raw": "[\n  {\n    \"role\": \"system\",\n    \"content\": \"You are a strict security auditor. You must analyze code for vulnerabilities (OWASP/CWE). Your output MUST be a single, raw JSON object. NO backticks, NO 'json' prefix, NO prose. If unsure or safe, set is_vuln to 'no'. Schema: {\\\"is_vuln\\\": \\\"yes\\\"|\\\"no\\\", \\\"cwe\\\": \\\"CWE-###\\\"|null, \\\"title\\\": \\\"string\\\", \\\"rationale\\\": \\\"string\\\"}\"\n  },\n  {\n    \"role\": \"user\",\n    \"content\": \"Analyze this code:\\n<<<\\nDocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance(); dbf.setFeature(\\\"http://apache.org/xml/features/disallow-doctype-decl\\\", true);\\n>>>\\n\\nRespond with the JSON object only:\"\n  }\n]",
+          "label": "prompts/secure_review_chat.json: [{\"role\":\"system\",\"content\":\"You are a strict security auditor. You must analyze code for vulnerabilities (OWASP/CWE). Your output MUST be a single, raw JSON object. NO backticks, NO 'json' prefix, NO prose. If unsure or safe, set is_vuln to 'no'. Schema: {\\\"is_vuln\\\": \\\"yes\\\"|\\\"no\\\", \\\"cwe\\\": \\\"CWE-###\\\"|null, \\\"title\\\": \\\"string\\\", \\\"rationale\\\": \\\"string\\\"}\"},{\"role\":\"user\",\"content\":\"Analyze this code:\\n<<<\\n{{code}}\\n>>>\\n\\nRespond with the JSON object only:\"}]"
+        },
+        "promptId": "fb6dffcaa06084edb7cd81743d883e0a4ac38b7c48df64991c8a25b4cc7cddfe",
+        "promptIdx": 0,
+        "provider": {
+          "id": "google:gemini-2.5-flash",
+          "label": "gemini-batch-free"
+        },
+        "response": {
+          "output": "{\"is_vuln\": \"no\", \"cwe\": null, \"title\": \"XML External Entity (XXE) Prevention\", \"rationale\": \"The code explicitly sets the 'http://apache.org/xml/features/disallow-doctype-decl' feature to 'true'. This is a security hardening measure that prevents the processing of DOCTYPE declarations, effectively mitigating XML External Entity (XXE) injection vulnerabilities (CWE-611). This code snippet is not vulnerable; it is implementing a defense.\"}",
+          "tokenUsage": {
+            "prompt": 153,
+            "completion": 110,
+            "total": 606,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 343,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "raw": {
+            "candidates": [
+              {
+                "content": {
+                  "parts": [
+                    {
+                      "text": "{\"is_vuln\": \"no\", \"cwe\": null, \"title\": \"XML External Entity (XXE) Prevention\", \"rationale\": \"The code explicitly sets the 'http://apache.org/xml/features/disallow-doctype-decl' feature to 'true'. This is a security hardening measure that prevents the processing of DOCTYPE declarations, effectively mitigating XML External Entity (XXE) injection vulnerabilities (CWE-611). This code snippet is not vulnerable; it is implementing a defense.\"}"
+                    }
+                  ],
+                  "role": "model"
+                },
+                "finishReason": "STOP",
+                "index": 0
+              }
+            ],
+            "usageMetadata": {
+              "promptTokenCount": 153,
+              "candidatesTokenCount": 110,
+              "totalTokenCount": 606,
+              "promptTokensDetails": [
+                {
+                  "modality": "TEXT",
+                  "tokenCount": 153
+                }
+              ],
+              "thoughtsTokenCount": 343
+            },
+            "modelVersion": "gemini-2.5-flash",
+            "responseId": "dyVVabCgJP-UxN8Piuud0Q8"
+          },
+          "cached": false,
+          "metadata": {}
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "code": "DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance(); dbf.setFeature(\"http://apache.org/xml/features/disallow-doctype-decl\", true);",
+            "cwe_hint": "CWE-611",
+            "file": "java/07_xxe_safe.java",
+            "label": "no",
+            "lang": "java"
+          },
+          "assert": [
+            {
+              "type": "is-json"
+            },
+            {
+              "type": "javascript",
+              "metric": "accuracy",
+              "value": "const expected = '{{ label }}';\nconst obj = typeof output === 'string' ? JSON.parse(output) : output;\nlet actual = obj.is_vuln;\n\nif (actual === undefined && typeof obj.is_vulnerable === 'boolean') {\n  actual = obj.is_vulnerable ? 'yes' : 'no';\n} else if (actual === undefined && typeof obj.is_vulnerable === 'string') {\n  const v = obj.is_vulnerable.toLowerCase();\n  if (v.includes('yes') || v.includes('true')) actual = 'yes';\n  if (v.includes('no')  || v.includes('false')) actual = 'no';\n}\n\n// Enhanced feedback with detailed error message\nif (actual === expected) {\n  return {\n    pass: true,\n    score: 1,\n    reason: `✅ Correct classification: ${actual} (CWE: ${obj.cwe || 'N/A'})`\n  };\n} else {\n  return {\n    pass: false,\n    score: 0,\n    reason: `❌ WRONG: Expected \"${expected}\" but got \"${actual}\"\\n` +\n            `   Model said: ${obj.title || 'N/A'}\\n` +\n            `   Rationale: ${obj.rationale?.substring(0, 150) || 'N/A'}...\\n` +\n            `   CWE: ${obj.cwe || 'none detected'}\\n` +\n            `   💡 FIX: Review prompt or provide better examples for this vulnerability type`\n  };\n}\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "code": "DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance(); dbf.setFeature(\"http://apache.org/xml/features/disallow-doctype-decl\", true);",
+          "cwe_hint": "CWE-611",
+          "file": "java/07_xxe_safe.java",
+          "label": "no",
+          "lang": "java"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {
+            "accuracy": 1
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "✅ Correct classification: yes (CWE: CWE-79)",
+              "metadata": {
+                "renderedAssertionValue": "const expected = 'yes';\nconst obj = typeof output === 'string' ? JSON.parse(output) : output;\nlet actual = obj.is_vuln;\n\nif (actual === undefined && typeof obj.is_vulnerable === 'boolean') {\n  actual = obj.is_vulnerable ? 'yes' : 'no';\n} else if (actual === undefined && typeof obj.is_vulnerable === 'string') {\n  const v = obj.is_vulnerable.toLowerCase();\n  if (v.includes('yes') || v.includes('true')) actual = 'yes';\n  if (v.includes('no')  || v.includes('false')) actual = 'no';\n}\n\n// Enhanced feedback with detailed error message\nif (actual === expected) {\n  return {\n    pass: true,\n    score: 1,\n    reason: `✅ Correct classification: ${actual} (CWE: ${obj.cwe || 'N/A'})`\n  };\n} else {\n  return {\n    pass: false,\n    score: 0,\n    reason: `❌ WRONG: Expected \"${expected}\" but got \"${actual}\"\\n` +\n            `   Model said: ${obj.title || 'N/A'}\\n` +\n            `   Rationale: ${obj.rationale?.substring(0, 150) || 'N/A'}...\\n` +\n            `   CWE: ${obj.cwe || 'none detected'}\\n` +\n            `   💡 FIX: Review prompt or provide better examples for this vulnerability type`\n  };\n}\n"
+              }
+            }
+          ]
+        },
+        "id": "7c3f226d-b8fe-434d-a01b-18a7ef0c2814",
+        "latencyMs": 2847,
+        "namedScores": {
+          "accuracy": 1
+        },
+        "prompt": {
+          "raw": "[\n  {\n    \"role\": \"system\",\n    \"content\": \"You are a strict security auditor. You must analyze code for vulnerabilities (OWASP/CWE). Your output MUST be a single, raw JSON object. NO backticks, NO 'json' prefix, NO prose. If unsure or safe, set is_vuln to 'no'. Schema: {\\\"is_vuln\\\": \\\"yes\\\"|\\\"no\\\", \\\"cwe\\\": \\\"CWE-###\\\"|null, \\\"title\\\": \\\"string\\\", \\\"rationale\\\": \\\"string\\\"}\"\n  },\n  {\n    \"role\": \"user\",\n    \"content\": \"Analyze this code:\\n<<<\\nout.println(\\\"<h1>\\\"+request.getParameter(\\\"name\\\")+\\\"</h1>\\\"); // CWE-79\\n>>>\\n\\nRespond with the JSON object only:\"\n  }\n]",
+          "label": "prompts/secure_review_chat.json: [{\"role\":\"system\",\"content\":\"You are a strict security auditor. You must analyze code for vulnerabilities (OWASP/CWE). Your output MUST be a single, raw JSON object. NO backticks, NO 'json' prefix, NO prose. If unsure or safe, set is_vuln to 'no'. Schema: {\\\"is_vuln\\\": \\\"yes\\\"|\\\"no\\\", \\\"cwe\\\": \\\"CWE-###\\\"|null, \\\"title\\\": \\\"string\\\", \\\"rationale\\\": \\\"string\\\"}\"},{\"role\":\"user\",\"content\":\"Analyze this code:\\n<<<\\n{{code}}\\n>>>\\n\\nRespond with the JSON object only:\"}]"
+        },
+        "promptId": "fb6dffcaa06084edb7cd81743d883e0a4ac38b7c48df64991c8a25b4cc7cddfe",
+        "promptIdx": 0,
+        "provider": {
+          "id": "google:gemini-2.5-flash",
+          "label": "gemini-batch-free"
+        },
+        "response": {
+          "output": "{\"is_vuln\": \"yes\", \"cwe\": \"CWE-79\", \"title\": \"Reflected Cross-Site Scripting (XSS)\", \"rationale\": \"The application directly embeds user-controlled input from `request.getParameter(\\\"name\\\")` into the HTML response without proper output encoding. An attacker can inject malicious scripts or HTML tags by providing specially crafted input, leading to client-side attacks such as session hijacking, defacement, or redirection.\"}",
+          "tokenUsage": {
+            "prompt": 136,
+            "completion": 100,
+            "total": 560,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 324,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "raw": {
+            "candidates": [
+              {
+                "content": {
+                  "parts": [
+                    {
+                      "text": "{\"is_vuln\": \"yes\", \"cwe\": \"CWE-79\", \"title\": \"Reflected Cross-Site Scripting (XSS)\", \"rationale\": \"The application directly embeds user-controlled input from `request.getParameter(\\\"name\\\")` into the HTML response without proper output encoding. An attacker can inject malicious scripts or HTML tags by providing specially crafted input, leading to client-side attacks such as session hijacking, defacement, or redirection.\"}"
+                    }
+                  ],
+                  "role": "model"
+                },
+                "finishReason": "STOP",
+                "index": 0
+              }
+            ],
+            "usageMetadata": {
+              "promptTokenCount": 136,
+              "candidatesTokenCount": 100,
+              "totalTokenCount": 560,
+              "promptTokensDetails": [
+                {
+                  "modality": "TEXT",
+                  "tokenCount": 136
+                }
+              ],
+              "thoughtsTokenCount": 324
+            },
+            "modelVersion": "gemini-2.5-flash",
+            "responseId": "fyVVaaWrGZ-MvdIPr6WduQ8"
+          },
+          "cached": false,
+          "metadata": {}
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "code": "out.println(\"<h1>\"+request.getParameter(\"name\")+\"</h1>\"); // CWE-79",
+            "cwe_hint": "CWE-79",
+            "file": "java/08_xss_java.java",
+            "label": "yes",
+            "lang": "java"
+          },
+          "assert": [
+            {
+              "type": "is-json"
+            },
+            {
+              "type": "javascript",
+              "metric": "accuracy",
+              "value": "const expected = '{{ label }}';\nconst obj = typeof output === 'string' ? JSON.parse(output) : output;\nlet actual = obj.is_vuln;\n\nif (actual === undefined && typeof obj.is_vulnerable === 'boolean') {\n  actual = obj.is_vulnerable ? 'yes' : 'no';\n} else if (actual === undefined && typeof obj.is_vulnerable === 'string') {\n  const v = obj.is_vulnerable.toLowerCase();\n  if (v.includes('yes') || v.includes('true')) actual = 'yes';\n  if (v.includes('no')  || v.includes('false')) actual = 'no';\n}\n\n// Enhanced feedback with detailed error message\nif (actual === expected) {\n  return {\n    pass: true,\n    score: 1,\n    reason: `✅ Correct classification: ${actual} (CWE: ${obj.cwe || 'N/A'})`\n  };\n} else {\n  return {\n    pass: false,\n    score: 0,\n    reason: `❌ WRONG: Expected \"${expected}\" but got \"${actual}\"\\n` +\n            `   Model said: ${obj.title || 'N/A'}\\n` +\n            `   Rationale: ${obj.rationale?.substring(0, 150) || 'N/A'}...\\n` +\n            `   CWE: ${obj.cwe || 'none detected'}\\n` +\n            `   💡 FIX: Review prompt or provide better examples for this vulnerability type`\n  };\n}\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "code": "out.println(\"<h1>\"+request.getParameter(\"name\")+\"</h1>\"); // CWE-79",
+          "cwe_hint": "CWE-79",
+          "file": "java/08_xss_java.java",
+          "label": "yes",
+          "lang": "java"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 2,
+      "failures": 0,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 289,
+        "completion": 210,
+        "cached": 0,
+        "total": 1166,
+        "numRequests": 2,
+        "completionDetails": {
+          "reasoning": 667,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 0,
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 15584
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Lab 2 eval: Ultra-conservative config for Google AI Studio FREE TIER (15 RPM limit)",
+    "prompts": [
+      "file:///Users/nino/Desktop/llm-sec/labs/lab2/prompts/secure_review_chat.json"
+    ],
+    "providers": [
+      {
+        "id": "google:gemini-2.5-flash",
+        "label": "gemini-batch-free",
+        "config": {
+          "apiKey": "{{ env.GEMINI_API_KEY }}",
+          "temperature": 0,
+          "showThinking": false,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "code": "DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance(); dbf.setFeature(\"http://apache.org/xml/features/disallow-doctype-decl\", true);",
+          "cwe_hint": "CWE-611",
+          "file": "java/07_xxe_safe.java",
+          "label": "no",
+          "lang": "java"
+        }
+      },
+      {
+        "vars": {
+          "code": "out.println(\"<h1>\"+request.getParameter(\"name\")+\"</h1>\"); // CWE-79",
+          "cwe_hint": "CWE-79",
+          "file": "java/08_xss_java.java",
+          "label": "yes",
+          "lang": "java"
+        }
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "assert": [
+        {
+          "type": "is-json"
+        },
+        {
+          "type": "javascript",
+          "metric": "accuracy",
+          "value": "const expected = '{{ label }}';\nconst obj = typeof output === 'string' ? JSON.parse(output) : output;\nlet actual = obj.is_vuln;\n\nif (actual === undefined && typeof obj.is_vulnerable === 'boolean') {\n  actual = obj.is_vulnerable ? 'yes' : 'no';\n} else if (actual === undefined && typeof obj.is_vulnerable === 'string') {\n  const v = obj.is_vulnerable.toLowerCase();\n  if (v.includes('yes') || v.includes('true')) actual = 'yes';\n  if (v.includes('no')  || v.includes('false')) actual = 'no';\n}\n\n// Enhanced feedback with detailed error message\nif (actual === expected) {\n  return {\n    pass: true,\n    score: 1,\n    reason: `✅ Correct classification: ${actual} (CWE: ${obj.cwe || 'N/A'})`\n  };\n} else {\n  return {\n    pass: false,\n    score: 0,\n    reason: `❌ WRONG: Expected \"${expected}\" but got \"${actual}\"\\n` +\n            `   Model said: ${obj.title || 'N/A'}\\n` +\n            `   Rationale: ${obj.rationale?.substring(0, 150) || 'N/A'}...\\n` +\n            `   CWE: ${obj.cwe || 'none detected'}\\n` +\n            `   💡 FIX: Review prompt or provide better examples for this vulnerability type`\n  };\n}\n"
+        }
+      ],
+      "vars": {},
+      "options": {},
+      "metadata": {}
+    },
+    "outputPath": [
+      "reports/batches/batch_14_results.json",
+      "reports/batches/batch_14_report.html"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {
+      "maxConcurrency": 1,
+      "delay": 5000,
+      "timeoutSeconds": 180
+    }
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.120.8",
+    "nodeVersion": "v22.13.1",
+    "platform": "darwin",
+    "arch": "x64",
+    "exportedAt": "2025-12-31T13:30:44.741Z",
+    "evaluationCreatedAt": "2025-12-31T13:30:29.055Z"
+  }
+}

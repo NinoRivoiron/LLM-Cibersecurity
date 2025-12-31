@@ -1,0 +1,142 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Lab 2 eval: Ultra-conservative config for Google AI Studio FREE TIER (15 RPM limit)</title>
+    <style>
+      body {
+        font-family:
+          -apple-system,
+          BlinkMacSystemFont,
+          Segoe UI,
+          Roboto,
+          Helvetica,
+          Arial,
+          sans-serif;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: left;
+        word-break: break-all;
+      }
+      th,
+      td {
+        padding: 5px;
+        min-width: 200px;
+        white-space: pre-wrap;
+        vertical-align: top;
+      }
+
+      tr > td[data-content^='[PASS]'] {
+        color: green;
+      }
+      tr > td[data-content^='[FAIL]'] {
+        color: #ad0000;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <thead>
+        
+        <th>code</th>
+        
+        <th>cwe_hint</th>
+        
+        <th>file</th>
+        
+        <th>label</th>
+        
+        <th>lang</th>
+        
+        <th>[gemini-batch-free] prompts/secure_review_chat.json: [{&quot;role&quot;:&quot;system&quot;,&quot;content&quot;:&quot;You are a strict security auditor. You must analyze code for vulnerabilities (OWASP/CWE). Your output MUST be a single, raw JSON object. NO backticks, NO &#39;json&#39; prefix, NO prose. If unsure or safe, set is_vuln to &#39;no&#39;. Schema: {&#92;&quot;is_vuln&#92;&quot;: &#92;&quot;yes&#92;&quot;|&#92;&quot;no&#92;&quot;, &#92;&quot;cwe&#92;&quot;: &#92;&quot;CWE-###&#92;&quot;|null, &#92;&quot;title&#92;&quot;: &#92;&quot;string&#92;&quot;, &#92;&quot;rationale&#92;&quot;: &#92;&quot;string&#92;&quot;}&quot;},{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;Analyze this code:&#92;n&lt;&lt;&lt;&#92;n{{code}}&#92;n&gt;&gt;&gt;&#92;n&#92;nRespond with the JSON object only:&quot;}]</th>
+        
+      </thead>
+      <tbody>
+        
+        <tr>
+          
+          <td data-content="from flask import Flask, request
+app = Flask(__name__)
+@app.route(&#39;/&#39;)
+def i():
+  name = request.args.get(&#39;name&#39;,&#39;&#39;)
+  return f&quot;&lt;h1&gt;{name}&lt;/h1&gt;&quot;  # CWE-79">from flask import Flask, request
+app = Flask(__name__)
+@app.route(&#39;/&#39;)
+def i():
+  name = request.args.get(&#39;name&#39;,&#39;&#39;)
+  return f&quot;&lt;h1&gt;{name}&lt;/h1&gt;&quot;  # CWE-79</td>
+          
+          <td data-content="CWE-79">CWE-79</td>
+          
+          <td data-content="python/09_xss_flask.py">python/09_xss_flask.py</td>
+          
+          <td data-content="yes">yes</td>
+          
+          <td data-content="python">python</td>
+          
+          <td data-content="[PASS] (1.00, accuracy: 1.00)
+
+{&quot;is_vuln&quot;: &quot;yes&quot;, &quot;cwe&quot;: &quot;CWE-79&quot;, &quot;title&quot;: &quot;Reflected Cross-Site Scripting (XSS)&quot;, &quot;rationale&quot;: &quot;The &#39;name&#39; parameter is taken directly from user input (request.args.get) and embedded into the HTML response without proper sanitization or escaping. This allows an attacker to inject malicious client-side scripts, which will be executed in the victim&#39;s browser when they visit the crafted URL.&quot;}
+
+Pass Reason: All assertions passed">[PASS] (1.00, accuracy: 1.00)
+
+{&quot;is_vuln&quot;: &quot;yes&quot;, &quot;cwe&quot;: &quot;CWE-79&quot;, &quot;title&quot;: &quot;Reflected Cross-Site Scripting (XSS)&quot;, &quot;rationale&quot;: &quot;The &#39;name&#39; parameter is taken directly from user input (request.args.get) and embedded into the HTML response without proper sanitization or escaping. This allows an attacker to inject malicious client-side scripts, which will be executed in the victim&#39;s browser when they visit the crafted URL.&quot;}
+
+Pass Reason: All assertions passed</td>
+          
+        </tr>
+        
+        <tr>
+          
+          <td data-content="from flask import Flask, request
+from markupsafe import escape
+app = Flask(__name__)
+@app.route(&#39;/&#39;)
+def i():
+  name = request.args.get(&#39;name&#39;,&#39;&#39;)
+  return f&quot;&lt;h1&gt;{escape(name)}&lt;/h1&gt;&quot;">from flask import Flask, request
+from markupsafe import escape
+app = Flask(__name__)
+@app.route(&#39;/&#39;)
+def i():
+  name = request.args.get(&#39;name&#39;,&#39;&#39;)
+  return f&quot;&lt;h1&gt;{escape(name)}&lt;/h1&gt;&quot;</td>
+          
+          <td data-content="CWE-79">CWE-79</td>
+          
+          <td data-content="python/10_xss_escape.py">python/10_xss_escape.py</td>
+          
+          <td data-content="yes">yes</td>
+          
+          <td data-content="python">python</td>
+          
+          <td data-content="[FAIL] (0.50, accuracy: 0.00)
+
+   {&quot;is_vuln&quot;: &quot;no&quot;, &quot;cwe&quot;: null, &quot;title&quot;: &quot;No Cross-Site Scripting (XSS) vulnerability detected&quot;, &quot;rationale&quot;: &quot;The code properly uses `markupsafe.escape()` on user-supplied input (`request.args.get(&#39;name&#39;,&#39;&#39;)`) before embedding it into the HTML response. This prevents Cross-Site Scripting (XSS) by converting special characters into their HTML entities, rendering any malicious script as plain text rather than executable code.&quot;}
+
+   Fail Reason: ❌ WRONG: Expected &quot;yes&quot; but got &quot;no&quot;
+Model said: No Cross-Site Scripting (XSS) vulnerability detected
+Rationale: The code properly uses `markupsafe.escape()` on user-supplied input (`request.args.get(&#39;name&#39;,&#39;&#39;)`) before embedding it into the HTML response. This p...
+CWE: none detected
+💡 FIX: Review prompt or provide better examples for this vulnerability type">[FAIL] (0.50, accuracy: 0.00)
+
+   {&quot;is_vuln&quot;: &quot;no&quot;, &quot;cwe&quot;: null, &quot;title&quot;: &quot;No Cross-Site Scripting (XSS) vulnerability detected&quot;, &quot;rationale&quot;: &quot;The code properly uses `markupsafe.escape()` on user-supplied input (`request.args.get(&#39;name&#39;,&#39;&#39;)`) before embedding it into the HTML response. This prevents Cross-Site Scripting (XSS) by converting special characters into their HTML entities, rendering any malicious script as plain text rather than executable code.&quot;}
+
+   Fail Reason: ❌ WRONG: Expected &quot;yes&quot; but got &quot;no&quot;
+Model said: No Cross-Site Scripting (XSS) vulnerability detected
+Rationale: The code properly uses `markupsafe.escape()` on user-supplied input (`request.args.get(&#39;name&#39;,&#39;&#39;)`) before embedding it into the HTML response. This p...
+CWE: none detected
+💡 FIX: Review prompt or provide better examples for this vulnerability type</td>
+          
+        </tr>
+        
+      </tbody>
+    </table>
+  </body>
+</html>

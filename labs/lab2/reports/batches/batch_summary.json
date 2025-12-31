@@ -1,0 +1,77 @@
+[
+  {
+    "batch_num": 1,
+    "status": "success",
+    "elapsed": 64.79929804801941
+  },
+  {
+    "batch_num": 2,
+    "status": "failed",
+    "elapsed": 24.517815113067627
+  },
+  {
+    "batch_num": 3,
+    "status": "success",
+    "elapsed": 19.755709886550903
+  },
+  {
+    "batch_num": 4,
+    "status": "failed",
+    "elapsed": 21.77281093597412
+  },
+  {
+    "batch_num": 5,
+    "status": "failed",
+    "elapsed": 20.485227823257446
+  },
+  {
+    "batch_num": 6,
+    "status": "success",
+    "elapsed": 21.104960203170776
+  },
+  {
+    "batch_num": 7,
+    "status": "failed",
+    "elapsed": 27.452059030532837
+  },
+  {
+    "batch_num": 8,
+    "status": "success",
+    "elapsed": 21.647608757019043
+  },
+  {
+    "batch_num": 9,
+    "status": "success",
+    "elapsed": 26.811236143112183
+  },
+  {
+    "batch_num": 10,
+    "status": "failed",
+    "elapsed": 22.90156579017639
+  },
+  {
+    "batch_num": 11,
+    "status": "failed",
+    "elapsed": 19.604645252227783
+  },
+  {
+    "batch_num": 12,
+    "status": "success",
+    "elapsed": 20.800592184066772
+  },
+  {
+    "batch_num": 13,
+    "status": "success",
+    "elapsed": 22.001015186309814
+  },
+  {
+    "batch_num": 14,
+    "status": "success",
+    "elapsed": 21.200374126434326
+  },
+  {
+    "batch_num": 15,
+    "status": "failed",
+    "elapsed": 25.18714690208435
+  }
+]

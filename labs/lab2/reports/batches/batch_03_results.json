@@ -1,0 +1,429 @@
+{
+  "evalId": "eval-c3O-2025-12-31T12:53:23",
+  "results": {
+    "version": 3,
+    "timestamp": "2025-12-31T12:53:23.145Z",
+    "prompts": [
+      {
+        "raw": "[{\"role\":\"system\",\"content\":\"You are a strict security auditor. You must analyze code for vulnerabilities (OWASP/CWE). Your output MUST be a single, raw JSON object. NO backticks, NO 'json' prefix, NO prose. If unsure or safe, set is_vuln to 'no'. Schema: {\\\"is_vuln\\\": \\\"yes\\\"|\\\"no\\\", \\\"cwe\\\": \\\"CWE-###\\\"|null, \\\"title\\\": \\\"string\\\", \\\"rationale\\\": \\\"string\\\"}\"},{\"role\":\"user\",\"content\":\"Analyze this code:\\n<<<\\n{{code}}\\n>>>\\n\\nRespond with the JSON object only:\"}]",
+        "label": "prompts/secure_review_chat.json: [{\"role\":\"system\",\"content\":\"You are a strict security auditor. You must analyze code for vulnerabilities (OWASP/CWE). Your output MUST be a single, raw JSON object. NO backticks, NO 'json' prefix, NO prose. If unsure or safe, set is_vuln to 'no'. Schema: {\\\"is_vuln\\\": \\\"yes\\\"|\\\"no\\\", \\\"cwe\\\": \\\"CWE-###\\\"|null, \\\"title\\\": \\\"string\\\", \\\"rationale\\\": \\\"string\\\"}\"},{\"role\":\"user\",\"content\":\"Analyze this code:\\n<<<\\n{{code}}\\n>>>\\n\\nRespond with the JSON object only:\"}]",
+        "id": "fb6dffcaa06084edb7cd81743d883e0a4ac38b7c48df64991c8a25b4cc7cddfe",
+        "provider": "gemini-batch-free",
+        "metrics": {
+          "score": 2,
+          "testPassCount": 2,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 4,
+          "assertFailCount": 0,
+          "totalLatencyMs": 5305,
+          "tokenUsage": {
+            "prompt": 299,
+            "completion": 253,
+            "cached": 0,
+            "total": 1152,
+            "numRequests": 2,
+            "completionDetails": {
+              "reasoning": 600,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {
+            "accuracy": 2
+          },
+          "namedScoresCount": {
+            "accuracy": 2
+          },
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {
+            "accuracy": 1
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "✅ Correct classification: yes (CWE: CWE-502)",
+              "metadata": {
+                "renderedAssertionValue": "const expected = 'yes';\nconst obj = typeof output === 'string' ? JSON.parse(output) : output;\nlet actual = obj.is_vuln;\n\nif (actual === undefined && typeof obj.is_vulnerable === 'boolean') {\n  actual = obj.is_vulnerable ? 'yes' : 'no';\n} else if (actual === undefined && typeof obj.is_vulnerable === 'string') {\n  const v = obj.is_vulnerable.toLowerCase();\n  if (v.includes('yes') || v.includes('true')) actual = 'yes';\n  if (v.includes('no')  || v.includes('false')) actual = 'no';\n}\n\n// Enhanced feedback with detailed error message\nif (actual === expected) {\n  return {\n    pass: true,\n    score: 1,\n    reason: `✅ Correct classification: ${actual} (CWE: ${obj.cwe || 'N/A'})`\n  };\n} else {\n  return {\n    pass: false,\n    score: 0,\n    reason: `❌ WRONG: Expected \"${expected}\" but got \"${actual}\"\\n` +\n            `   Model said: ${obj.title || 'N/A'}\\n` +\n            `   Rationale: ${obj.rationale?.substring(0, 150) || 'N/A'}...\\n` +\n            `   CWE: ${obj.cwe || 'none detected'}\\n` +\n            `   💡 FIX: Review prompt or provide better examples for this vulnerability type`\n  };\n}\n"
+              }
+            }
+          ]
+        },
+        "id": "beaabfc9-02d5-488e-be95-669db703a03f",
+        "latencyMs": 2447,
+        "namedScores": {
+          "accuracy": 1
+        },
+        "prompt": {
+          "raw": "[\n  {\n    \"role\": \"system\",\n    \"content\": \"You are a strict security auditor. You must analyze code for vulnerabilities (OWASP/CWE). Your output MUST be a single, raw JSON object. NO backticks, NO 'json' prefix, NO prose. If unsure or safe, set is_vuln to 'no'. Schema: {\\\"is_vuln\\\": \\\"yes\\\"|\\\"no\\\", \\\"cwe\\\": \\\"CWE-###\\\"|null, \\\"title\\\": \\\"string\\\", \\\"rationale\\\": \\\"string\\\"}\"\n  },\n  {\n    \"role\": \"user\",\n    \"content\": \"Analyze this code:\\n<<<\\nimport pickle\\nraw = input('data: ')\\nobj = pickle.loads(bytes.fromhex(raw))  # CWE-502\\n>>>\\n\\nRespond with the JSON object only:\"\n  }\n]",
+          "label": "prompts/secure_review_chat.json: [{\"role\":\"system\",\"content\":\"You are a strict security auditor. You must analyze code for vulnerabilities (OWASP/CWE). Your output MUST be a single, raw JSON object. NO backticks, NO 'json' prefix, NO prose. If unsure or safe, set is_vuln to 'no'. Schema: {\\\"is_vuln\\\": \\\"yes\\\"|\\\"no\\\", \\\"cwe\\\": \\\"CWE-###\\\"|null, \\\"title\\\": \\\"string\\\", \\\"rationale\\\": \\\"string\\\"}\"},{\"role\":\"user\",\"content\":\"Analyze this code:\\n<<<\\n{{code}}\\n>>>\\n\\nRespond with the JSON object only:\"}]"
+        },
+        "promptId": "fb6dffcaa06084edb7cd81743d883e0a4ac38b7c48df64991c8a25b4cc7cddfe",
+        "promptIdx": 0,
+        "provider": {
+          "id": "google:gemini-2.5-flash",
+          "label": "gemini-batch-free"
+        },
+        "response": {
+          "output": "{\"is_vuln\": \"yes\", \"cwe\": \"CWE-502\", \"title\": \"Deserialization of Untrusted Data\", \"rationale\": \"The code uses `pickle.loads` to deserialize data provided directly by user input (`input('data: ')`). The Python `pickle` module is not secure against maliciously constructed data. Deserializing untrusted data can lead to arbitrary code execution, denial of service, or privilege escalation, as a malicious actor can craft a serialized object that executes arbitrary code upon deserialization. This is a critical vulnerability, often leading to Remote Code Execution (RCE).\"}",
+          "tokenUsage": {
+            "prompt": 147,
+            "completion": 129,
+            "total": 575,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 299,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "raw": {
+            "candidates": [
+              {
+                "content": {
+                  "parts": [
+                    {
+                      "text": "{\"is_vuln\": \"yes\", \"cwe\": \"CWE-502\", \"title\": \"Deserialization of Untrusted Data\", \"rationale\": \"The code uses `pickle.loads` to deserialize data provided directly by user input (`input('data: ')`). The Python `pickle` module is not secure against maliciously constructed data. Deserializing untrusted data can lead to arbitrary code execution, denial of service, or privilege escalation, as a malicious actor can craft a serialized object that executes arbitrary code upon deserialization. This is a critical vulnerability, often leading to Remote Code Execution (RCE).\"}"
+                    }
+                  ],
+                  "role": "model"
+                },
+                "finishReason": "STOP",
+                "index": 0
+              }
+            ],
+            "usageMetadata": {
+              "promptTokenCount": 147,
+              "candidatesTokenCount": 129,
+              "totalTokenCount": 575,
+              "promptTokensDetails": [
+                {
+                  "modality": "TEXT",
+                  "tokenCount": 147
+                }
+              ],
+              "thoughtsTokenCount": 299
+            },
+            "modelVersion": "gemini-2.5-flash",
+            "responseId": "xRxVadvvHbWnkdUPi_fNqAo"
+          },
+          "cached": false,
+          "metadata": {}
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "code": "import pickle\nraw = input('data: ')\nobj = pickle.loads(bytes.fromhex(raw))  # CWE-502",
+            "cwe_hint": "CWE-502",
+            "file": "python/05_deser.py",
+            "label": "yes",
+            "lang": "python"
+          },
+          "assert": [
+            {
+              "type": "is-json"
+            },
+            {
+              "type": "javascript",
+              "metric": "accuracy",
+              "value": "const expected = '{{ label }}';\nconst obj = typeof output === 'string' ? JSON.parse(output) : output;\nlet actual = obj.is_vuln;\n\nif (actual === undefined && typeof obj.is_vulnerable === 'boolean') {\n  actual = obj.is_vulnerable ? 'yes' : 'no';\n} else if (actual === undefined && typeof obj.is_vulnerable === 'string') {\n  const v = obj.is_vulnerable.toLowerCase();\n  if (v.includes('yes') || v.includes('true')) actual = 'yes';\n  if (v.includes('no')  || v.includes('false')) actual = 'no';\n}\n\n// Enhanced feedback with detailed error message\nif (actual === expected) {\n  return {\n    pass: true,\n    score: 1,\n    reason: `✅ Correct classification: ${actual} (CWE: ${obj.cwe || 'N/A'})`\n  };\n} else {\n  return {\n    pass: false,\n    score: 0,\n    reason: `❌ WRONG: Expected \"${expected}\" but got \"${actual}\"\\n` +\n            `   Model said: ${obj.title || 'N/A'}\\n` +\n            `   Rationale: ${obj.rationale?.substring(0, 150) || 'N/A'}...\\n` +\n            `   CWE: ${obj.cwe || 'none detected'}\\n` +\n            `   💡 FIX: Review prompt or provide better examples for this vulnerability type`\n  };\n}\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "code": "import pickle\nraw = input('data: ')\nobj = pickle.loads(bytes.fromhex(raw))  # CWE-502",
+          "cwe_hint": "CWE-502",
+          "file": "python/05_deser.py",
+          "label": "yes",
+          "lang": "python"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {
+            "accuracy": 1
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "✅ Correct classification: yes (CWE: CWE-327)",
+              "metadata": {
+                "renderedAssertionValue": "const expected = 'yes';\nconst obj = typeof output === 'string' ? JSON.parse(output) : output;\nlet actual = obj.is_vuln;\n\nif (actual === undefined && typeof obj.is_vulnerable === 'boolean') {\n  actual = obj.is_vulnerable ? 'yes' : 'no';\n} else if (actual === undefined && typeof obj.is_vulnerable === 'string') {\n  const v = obj.is_vulnerable.toLowerCase();\n  if (v.includes('yes') || v.includes('true')) actual = 'yes';\n  if (v.includes('no')  || v.includes('false')) actual = 'no';\n}\n\n// Enhanced feedback with detailed error message\nif (actual === expected) {\n  return {\n    pass: true,\n    score: 1,\n    reason: `✅ Correct classification: ${actual} (CWE: ${obj.cwe || 'N/A'})`\n  };\n} else {\n  return {\n    pass: false,\n    score: 0,\n    reason: `❌ WRONG: Expected \"${expected}\" but got \"${actual}\"\\n` +\n            `   Model said: ${obj.title || 'N/A'}\\n` +\n            `   Rationale: ${obj.rationale?.substring(0, 150) || 'N/A'}...\\n` +\n            `   CWE: ${obj.cwe || 'none detected'}\\n` +\n            `   💡 FIX: Review prompt or provide better examples for this vulnerability type`\n  };\n}\n"
+              }
+            }
+          ]
+        },
+        "id": "33f55b5b-1baf-4741-ac7e-57711791777b",
+        "latencyMs": 2858,
+        "namedScores": {
+          "accuracy": 1
+        },
+        "prompt": {
+          "raw": "[\n  {\n    \"role\": \"system\",\n    \"content\": \"You are a strict security auditor. You must analyze code for vulnerabilities (OWASP/CWE). Your output MUST be a single, raw JSON object. NO backticks, NO 'json' prefix, NO prose. If unsure or safe, set is_vuln to 'no'. Schema: {\\\"is_vuln\\\": \\\"yes\\\"|\\\"no\\\", \\\"cwe\\\": \\\"CWE-###\\\"|null, \\\"title\\\": \\\"string\\\", \\\"rationale\\\": \\\"string\\\"}\"\n  },\n  {\n    \"role\": \"user\",\n    \"content\": \"Analyze this code:\\n<<<\\nimport hashlib\\npwd = input('pwd: ')\\nprint(hashlib.md5(pwd.encode()).hexdigest())  # weak hash CWE-327\\n>>>\\n\\nRespond with the JSON object only:\"\n  }\n]",
+          "label": "prompts/secure_review_chat.json: [{\"role\":\"system\",\"content\":\"You are a strict security auditor. You must analyze code for vulnerabilities (OWASP/CWE). Your output MUST be a single, raw JSON object. NO backticks, NO 'json' prefix, NO prose. If unsure or safe, set is_vuln to 'no'. Schema: {\\\"is_vuln\\\": \\\"yes\\\"|\\\"no\\\", \\\"cwe\\\": \\\"CWE-###\\\"|null, \\\"title\\\": \\\"string\\\", \\\"rationale\\\": \\\"string\\\"}\"},{\"role\":\"user\",\"content\":\"Analyze this code:\\n<<<\\n{{code}}\\n>>>\\n\\nRespond with the JSON object only:\"}]"
+        },
+        "promptId": "fb6dffcaa06084edb7cd81743d883e0a4ac38b7c48df64991c8a25b4cc7cddfe",
+        "promptIdx": 0,
+        "provider": {
+          "id": "google:gemini-2.5-flash",
+          "label": "gemini-batch-free"
+        },
+        "response": {
+          "output": "{\"is_vuln\": \"yes\", \"cwe\": \"CWE-327\", \"title\": \"Use of a Cryptographically Weak Hashing Algorithm for Passwords\", \"rationale\": \"The code uses `hashlib.md5` to hash a password. MD5 is a cryptographically weak hashing algorithm that is vulnerable to collision attacks and is too fast, making it susceptible to brute-force attacks and rainbow table attacks. It is not suitable for password storage. Stronger, adaptive, salted hashing functions like bcrypt, scrypt, or Argon2 should be used for password hashing.\"}",
+          "tokenUsage": {
+            "prompt": 152,
+            "completion": 124,
+            "total": 577,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 301,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "raw": {
+            "candidates": [
+              {
+                "content": {
+                  "parts": [
+                    {
+                      "text": "{\"is_vuln\": \"yes\", \"cwe\": \"CWE-327\", \"title\": \"Use of a Cryptographically Weak Hashing Algorithm for Passwords\", \"rationale\": \"The code uses `hashlib.md5` to hash a password. MD5 is a cryptographically weak hashing algorithm that is vulnerable to collision attacks and is too fast, making it susceptible to brute-force attacks and rainbow table attacks. It is not suitable for password storage. Stronger, adaptive, salted hashing functions like bcrypt, scrypt, or Argon2 should be used for password hashing.\"}"
+                    }
+                  ],
+                  "role": "model"
+                },
+                "finishReason": "STOP",
+                "index": 0
+              }
+            ],
+            "usageMetadata": {
+              "promptTokenCount": 152,
+              "candidatesTokenCount": 124,
+              "totalTokenCount": 577,
+              "promptTokensDetails": [
+                {
+                  "modality": "TEXT",
+                  "tokenCount": 152
+                }
+              ],
+              "thoughtsTokenCount": 301
+            },
+            "modelVersion": "gemini-2.5-flash",
+            "responseId": "zRxVad2ME5zQnsEPiNecsQg"
+          },
+          "cached": false,
+          "metadata": {}
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "code": "import hashlib\npwd = input('pwd: ')\nprint(hashlib.md5(pwd.encode()).hexdigest())  # weak hash CWE-327",
+            "cwe_hint": null,
+            "file": "python/06_hash.py",
+            "label": "yes",
+            "lang": "python"
+          },
+          "assert": [
+            {
+              "type": "is-json"
+            },
+            {
+              "type": "javascript",
+              "metric": "accuracy",
+              "value": "const expected = '{{ label }}';\nconst obj = typeof output === 'string' ? JSON.parse(output) : output;\nlet actual = obj.is_vuln;\n\nif (actual === undefined && typeof obj.is_vulnerable === 'boolean') {\n  actual = obj.is_vulnerable ? 'yes' : 'no';\n} else if (actual === undefined && typeof obj.is_vulnerable === 'string') {\n  const v = obj.is_vulnerable.toLowerCase();\n  if (v.includes('yes') || v.includes('true')) actual = 'yes';\n  if (v.includes('no')  || v.includes('false')) actual = 'no';\n}\n\n// Enhanced feedback with detailed error message\nif (actual === expected) {\n  return {\n    pass: true,\n    score: 1,\n    reason: `✅ Correct classification: ${actual} (CWE: ${obj.cwe || 'N/A'})`\n  };\n} else {\n  return {\n    pass: false,\n    score: 0,\n    reason: `❌ WRONG: Expected \"${expected}\" but got \"${actual}\"\\n` +\n            `   Model said: ${obj.title || 'N/A'}\\n` +\n            `   Rationale: ${obj.rationale?.substring(0, 150) || 'N/A'}...\\n` +\n            `   CWE: ${obj.cwe || 'none detected'}\\n` +\n            `   💡 FIX: Review prompt or provide better examples for this vulnerability type`\n  };\n}\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "code": "import hashlib\npwd = input('pwd: ')\nprint(hashlib.md5(pwd.encode()).hexdigest())  # weak hash CWE-327",
+          "cwe_hint": null,
+          "file": "python/06_hash.py",
+          "label": "yes",
+          "lang": "python"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 2,
+      "failures": 0,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 299,
+        "completion": 253,
+        "cached": 0,
+        "total": 1152,
+        "numRequests": 2,
+        "completionDetails": {
+          "reasoning": 600,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 0,
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 15406
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Lab 2 eval: Ultra-conservative config for Google AI Studio FREE TIER (15 RPM limit)",
+    "prompts": [
+      "file:///Users/nino/Desktop/llm-sec/labs/lab2/prompts/secure_review_chat.json"
+    ],
+    "providers": [
+      {
+        "id": "google:gemini-2.5-flash",
+        "label": "gemini-batch-free",
+        "config": {
+          "apiKey": "{{ env.GEMINI_API_KEY }}",
+          "temperature": 0,
+          "showThinking": false,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "code": "import pickle\nraw = input('data: ')\nobj = pickle.loads(bytes.fromhex(raw))  # CWE-502",
+          "cwe_hint": "CWE-502",
+          "file": "python/05_deser.py",
+          "label": "yes",
+          "lang": "python"
+        }
+      },
+      {
+        "vars": {
+          "code": "import hashlib\npwd = input('pwd: ')\nprint(hashlib.md5(pwd.encode()).hexdigest())  # weak hash CWE-327",
+          "cwe_hint": null,
+          "file": "python/06_hash.py",
+          "label": "yes",
+          "lang": "python"
+        }
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "assert": [
+        {
+          "type": "is-json"
+        },
+        {
+          "type": "javascript",
+          "metric": "accuracy",
+          "value": "const expected = '{{ label }}';\nconst obj = typeof output === 'string' ? JSON.parse(output) : output;\nlet actual = obj.is_vuln;\n\nif (actual === undefined && typeof obj.is_vulnerable === 'boolean') {\n  actual = obj.is_vulnerable ? 'yes' : 'no';\n} else if (actual === undefined && typeof obj.is_vulnerable === 'string') {\n  const v = obj.is_vulnerable.toLowerCase();\n  if (v.includes('yes') || v.includes('true')) actual = 'yes';\n  if (v.includes('no')  || v.includes('false')) actual = 'no';\n}\n\n// Enhanced feedback with detailed error message\nif (actual === expected) {\n  return {\n    pass: true,\n    score: 1,\n    reason: `✅ Correct classification: ${actual} (CWE: ${obj.cwe || 'N/A'})`\n  };\n} else {\n  return {\n    pass: false,\n    score: 0,\n    reason: `❌ WRONG: Expected \"${expected}\" but got \"${actual}\"\\n` +\n            `   Model said: ${obj.title || 'N/A'}\\n` +\n            `   Rationale: ${obj.rationale?.substring(0, 150) || 'N/A'}...\\n` +\n            `   CWE: ${obj.cwe || 'none detected'}\\n` +\n            `   💡 FIX: Review prompt or provide better examples for this vulnerability type`\n  };\n}\n"
+        }
+      ],
+      "vars": {},
+      "options": {},
+      "metadata": {}
+    },
+    "outputPath": [
+      "reports/batches/batch_03_results.json",
+      "reports/batches/batch_03_report.html"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {
+      "maxConcurrency": 1,
+      "delay": 5000,
+      "timeoutSeconds": 180
+    }
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.120.8",
+    "nodeVersion": "v22.13.1",
+    "platform": "darwin",
+    "arch": "x64",
+    "exportedAt": "2025-12-31T12:53:38.687Z",
+    "evaluationCreatedAt": "2025-12-31T12:53:23.145Z"
+  }
+}

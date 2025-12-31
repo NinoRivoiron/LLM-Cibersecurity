@@ -1,0 +1,210 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Lab 2 eval: Ultra-conservative config for Google AI Studio FREE TIER (15 RPM limit)</title>
+    <style>
+      body {
+        font-family:
+          -apple-system,
+          BlinkMacSystemFont,
+          Segoe UI,
+          Roboto,
+          Helvetica,
+          Arial,
+          sans-serif;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: left;
+        word-break: break-all;
+      }
+      th,
+      td {
+        padding: 5px;
+        min-width: 200px;
+        white-space: pre-wrap;
+        vertical-align: top;
+      }
+
+      tr > td[data-content^='[PASS]'] {
+        color: green;
+      }
+      tr > td[data-content^='[FAIL]'] {
+        color: #ad0000;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <thead>
+        
+        <th>code</th>
+        
+        <th>cwe_hint</th>
+        
+        <th>file</th>
+        
+        <th>label</th>
+        
+        <th>lang</th>
+        
+        <th>[gemini-batch-free] prompts/secure_review_chat.json: [{&quot;role&quot;:&quot;system&quot;,&quot;content&quot;:&quot;You are a strict security auditor. You must analyze code for vulnerabilities (OWASP/CWE). Your output MUST be a single, raw JSON object. NO backticks, NO &#39;json&#39; prefix, NO prose. If unsure or safe, set is_vuln to &#39;no&#39;. Schema: {&#92;&quot;is_vuln&#92;&quot;: &#92;&quot;yes&#92;&quot;|&#92;&quot;no&#92;&quot;, &#92;&quot;cwe&#92;&quot;: &#92;&quot;CWE-###&#92;&quot;|null, &#92;&quot;title&#92;&quot;: &#92;&quot;string&#92;&quot;, &#92;&quot;rationale&#92;&quot;: &#92;&quot;string&#92;&quot;}&quot;},{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;Analyze this code:&#92;n&lt;&lt;&lt;&#92;n{{code}}&#92;n&gt;&gt;&gt;&#92;n&#92;nRespond with the JSON object only:&quot;}]</th>
+        
+      </thead>
+      <tbody>
+        
+        <tr>
+          
+          <td data-content="String n = request.getParameter(&quot;n&quot;); Files.readString(Paths.get(&quot;..&quot;, n)); // CWE-22">String n = request.getParameter(&quot;n&quot;); Files.readString(Paths.get(&quot;..&quot;, n)); // CWE-22</td>
+          
+          <td data-content="CWE-22">CWE-22</td>
+          
+          <td data-content="java/09_path_trav.java">java/09_path_trav.java</td>
+          
+          <td data-content="yes">yes</td>
+          
+          <td data-content="java">java</td>
+          
+          <td data-content="[FAIL] (0.00, accuracy: 0.00)
+
+    ```json
+{&quot;is_vuln&quot;: &quot;yes&quot;, &quot;cwe&quot;: &quot;CWE-22&quot;, &quot;title&quot;: &quot;Path Traversal&quot;, &quot;rationale&quot;: &quot;The application directly uses user-controlled input &#39;n&#39; from request.getParameter() to construct a file path via Paths.get(&#92;&quot;..&#92;&quot;, n). An attacker can manipulate &#39;n&#39; with directory traversal sequences (e.g., &#39;..%2f&#39;, &#39;../&#39;) to access or read arbitrary files outside the intended directory, potentially leading to information disclosure or system compromise. The &#39;..&#39; prefix in Paths.get() further exacerbates the risk by already moving one level up from the current directory before appending the user-controlled input.&quot;}
+```
+
+    Fail Reason: Custom function threw error: Unexpected token &#39;`&#39;, &quot;```json
+{&quot;&quot;... is not valid JSON
+Stack Trace: SyntaxError: Unexpected token &#39;`&#39;, &quot;```json
+{&quot;&quot;... is not valid JSON
+  at JSON.parse (&lt;anonymous&gt;)
+  at eval (eval at handleJavascript (file:///Users/nino/.npm/_npx/1ddbeaccabfe00a4/node_modules/promptfoo/dist/src/evaluator-DUa6jTyI.js:1327:34), &lt;anonymous&gt;:4:47)
+  at handleJavascript (file:///Users/nino/.npm/_npx/1ddbeaccabfe00a4/node_modules/promptfoo/dist/src/evaluator-DUa6jTyI.js:1327:92)
+  at runAssertion (file:///Users/nino/.npm/_npx/1ddbeaccabfe00a4/node_modules/promptfoo/dist/src/evaluator-DUa6jTyI.js:2741:24)
+  at file:///Users/nino/.npm/_npx/1ddbeaccabfe00a4/node_modules/promptfoo/dist/src/evaluator-DUa6jTyI.js:2784:24
+  at /Users/nino/.npm/_npx/1ddbeaccabfe00a4/node_modules/async/dist/async.js:151:38
+  at replenish (/Users/nino/.npm/_npx/1ddbeaccabfe00a4/node_modules/async/dist/async.js:447:21)
+  at /Users/nino/.npm/_npx/1ddbeaccabfe00a4/node_modules/async/dist/async.js:452:13
+  at Object.eachOfLimit (/Users/nino/.npm/_npx/1ddbeaccabfe00a4/node_modules/async/dist/async.js:478:36)
+  at /Users/nino/.npm/_npx/1ddbeaccabfe00a4/node_modules/async/dist/async.js:220:25
+const expected = &#39;yes&#39;;
+const obj = typeof output === &#39;string&#39; ? JSON.parse(output) : output;
+let actual = obj.is_vuln;
+
+if (actual === undefined &amp;&amp; typeof obj.is_vulnerable === &#39;boolean&#39;) {
+actual = obj.is_vulnerable ? &#39;yes&#39; : &#39;no&#39;;
+} else if (actual === undefined &amp;&amp; typeof obj.is_vulnerable === &#39;string&#39;) {
+const v = obj.is_vulnerable.toLowerCase();
+if (v.includes(&#39;yes&#39;) || v.includes(&#39;true&#39;)) actual = &#39;yes&#39;;
+if (v.includes(&#39;no&#39;)  || v.includes(&#39;false&#39;)) actual = &#39;no&#39;;
+}
+
+// Enhanced feedback with detailed error message
+if (actual === expected) {
+return {
+  pass: true,
+  score: 1,
+  reason: `✅ Correct classification: ${actual} (CWE: ${obj.cwe || &#39;N/A&#39;})`
+};
+} else {
+return {
+  pass: false,
+  score: 0,
+  reason: `❌ WRONG: Expected &quot;${expected}&quot; but got &quot;${actual}&quot;
+` +
+          `   Model said: ${obj.title || &#39;N/A&#39;}
+` +
+          `   Rationale: ${obj.rationale?.substring(0, 150) || &#39;N/A&#39;}...
+` +
+          `   CWE: ${obj.cwe || &#39;none detected&#39;}
+` +
+          `   💡 FIX: Review prompt or provide better examples for this vulnerability type`
+};
+}">[FAIL] (0.00, accuracy: 0.00)
+
+    ```json
+{&quot;is_vuln&quot;: &quot;yes&quot;, &quot;cwe&quot;: &quot;CWE-22&quot;, &quot;title&quot;: &quot;Path Traversal&quot;, &quot;rationale&quot;: &quot;The application directly uses user-controlled input &#39;n&#39; from request.getParameter() to construct a file path via Paths.get(&#92;&quot;..&#92;&quot;, n). An attacker can manipulate &#39;n&#39; with directory traversal sequences (e.g., &#39;..%2f&#39;, &#39;../&#39;) to access or read arbitrary files outside the intended directory, potentially leading to information disclosure or system compromise. The &#39;..&#39; prefix in Paths.get() further exacerbates the risk by already moving one level up from the current directory before appending the user-controlled input.&quot;}
+```
+
+    Fail Reason: Custom function threw error: Unexpected token &#39;`&#39;, &quot;```json
+{&quot;&quot;... is not valid JSON
+Stack Trace: SyntaxError: Unexpected token &#39;`&#39;, &quot;```json
+{&quot;&quot;... is not valid JSON
+  at JSON.parse (&lt;anonymous&gt;)
+  at eval (eval at handleJavascript (file:///Users/nino/.npm/_npx/1ddbeaccabfe00a4/node_modules/promptfoo/dist/src/evaluator-DUa6jTyI.js:1327:34), &lt;anonymous&gt;:4:47)
+  at handleJavascript (file:///Users/nino/.npm/_npx/1ddbeaccabfe00a4/node_modules/promptfoo/dist/src/evaluator-DUa6jTyI.js:1327:92)
+  at runAssertion (file:///Users/nino/.npm/_npx/1ddbeaccabfe00a4/node_modules/promptfoo/dist/src/evaluator-DUa6jTyI.js:2741:24)
+  at file:///Users/nino/.npm/_npx/1ddbeaccabfe00a4/node_modules/promptfoo/dist/src/evaluator-DUa6jTyI.js:2784:24
+  at /Users/nino/.npm/_npx/1ddbeaccabfe00a4/node_modules/async/dist/async.js:151:38
+  at replenish (/Users/nino/.npm/_npx/1ddbeaccabfe00a4/node_modules/async/dist/async.js:447:21)
+  at /Users/nino/.npm/_npx/1ddbeaccabfe00a4/node_modules/async/dist/async.js:452:13
+  at Object.eachOfLimit (/Users/nino/.npm/_npx/1ddbeaccabfe00a4/node_modules/async/dist/async.js:478:36)
+  at /Users/nino/.npm/_npx/1ddbeaccabfe00a4/node_modules/async/dist/async.js:220:25
+const expected = &#39;yes&#39;;
+const obj = typeof output === &#39;string&#39; ? JSON.parse(output) : output;
+let actual = obj.is_vuln;
+
+if (actual === undefined &amp;&amp; typeof obj.is_vulnerable === &#39;boolean&#39;) {
+actual = obj.is_vulnerable ? &#39;yes&#39; : &#39;no&#39;;
+} else if (actual === undefined &amp;&amp; typeof obj.is_vulnerable === &#39;string&#39;) {
+const v = obj.is_vulnerable.toLowerCase();
+if (v.includes(&#39;yes&#39;) || v.includes(&#39;true&#39;)) actual = &#39;yes&#39;;
+if (v.includes(&#39;no&#39;)  || v.includes(&#39;false&#39;)) actual = &#39;no&#39;;
+}
+
+// Enhanced feedback with detailed error message
+if (actual === expected) {
+return {
+  pass: true,
+  score: 1,
+  reason: `✅ Correct classification: ${actual} (CWE: ${obj.cwe || &#39;N/A&#39;})`
+};
+} else {
+return {
+  pass: false,
+  score: 0,
+  reason: `❌ WRONG: Expected &quot;${expected}&quot; but got &quot;${actual}&quot;
+` +
+          `   Model said: ${obj.title || &#39;N/A&#39;}
+` +
+          `   Rationale: ${obj.rationale?.substring(0, 150) || &#39;N/A&#39;}...
+` +
+          `   CWE: ${obj.cwe || &#39;none detected&#39;}
+` +
+          `   💡 FIX: Review prompt or provide better examples for this vulnerability type`
+};
+}</td>
+          
+        </tr>
+        
+        <tr>
+          
+          <td data-content="System.out.println(&quot;Hello&quot;);">System.out.println(&quot;Hello&quot;);</td>
+          
+          <td data-content=""></td>
+          
+          <td data-content="java/10_safe.java">java/10_safe.java</td>
+          
+          <td data-content="no">no</td>
+          
+          <td data-content="java">java</td>
+          
+          <td data-content="[PASS] (1.00, accuracy: 1.00)
+
+{&quot;is_vuln&quot;: &quot;no&quot;, &quot;cwe&quot;: null, &quot;title&quot;: &quot;No apparent vulnerability&quot;, &quot;rationale&quot;: &quot;The provided code snippet `System.out.println(&#92;&quot;Hello&#92;&quot;);` is a simple print statement that outputs a static string to the console. It does not involve any user input, external data, file operations, network communication, or complex logic that could introduce security vulnerabilities (e.g., injection, information disclosure, insecure deserialization, etc.). There is no identifiable attack surface or potential for misuse in this isolated snippet.&quot;}
+
+Pass Reason: All assertions passed">[PASS] (1.00, accuracy: 1.00)
+
+{&quot;is_vuln&quot;: &quot;no&quot;, &quot;cwe&quot;: null, &quot;title&quot;: &quot;No apparent vulnerability&quot;, &quot;rationale&quot;: &quot;The provided code snippet `System.out.println(&#92;&quot;Hello&#92;&quot;);` is a simple print statement that outputs a static string to the console. It does not involve any user input, external data, file operations, network communication, or complex logic that could introduce security vulnerabilities (e.g., injection, information disclosure, insecure deserialization, etc.). There is no identifiable attack surface or potential for misuse in this isolated snippet.&quot;}
+
+Pass Reason: All assertions passed</td>
+          
+        </tr>
+        
+      </tbody>
+    </table>
+  </body>
+</html>

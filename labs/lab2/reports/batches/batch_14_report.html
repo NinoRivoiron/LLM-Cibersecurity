@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Lab 2 eval: Ultra-conservative config for Google AI Studio FREE TIER (15 RPM limit)</title>
+    <style>
+      body {
+        font-family:
+          -apple-system,
+          BlinkMacSystemFont,
+          Segoe UI,
+          Roboto,
+          Helvetica,
+          Arial,
+          sans-serif;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: left;
+        word-break: break-all;
+      }
+      th,
+      td {
+        padding: 5px;
+        min-width: 200px;
+        white-space: pre-wrap;
+        vertical-align: top;
+      }
+
+      tr > td[data-content^='[PASS]'] {
+        color: green;
+      }
+      tr > td[data-content^='[FAIL]'] {
+        color: #ad0000;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <thead>
+        
+        <th>code</th>
+        
+        <th>cwe_hint</th>
+        
+        <th>file</th>
+        
+        <th>label</th>
+        
+        <th>lang</th>
+        
+        <th>[gemini-batch-free] prompts/secure_review_chat.json: [{&quot;role&quot;:&quot;system&quot;,&quot;content&quot;:&quot;You are a strict security auditor. You must analyze code for vulnerabilities (OWASP/CWE). Your output MUST be a single, raw JSON object. NO backticks, NO &#39;json&#39; prefix, NO prose. If unsure or safe, set is_vuln to &#39;no&#39;. Schema: {&#92;&quot;is_vuln&#92;&quot;: &#92;&quot;yes&#92;&quot;|&#92;&quot;no&#92;&quot;, &#92;&quot;cwe&#92;&quot;: &#92;&quot;CWE-###&#92;&quot;|null, &#92;&quot;title&#92;&quot;: &#92;&quot;string&#92;&quot;, &#92;&quot;rationale&#92;&quot;: &#92;&quot;string&#92;&quot;}&quot;},{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;Analyze this code:&#92;n&lt;&lt;&lt;&#92;n{{code}}&#92;n&gt;&gt;&gt;&#92;n&#92;nRespond with the JSON object only:&quot;}]</th>
+        
+      </thead>
+      <tbody>
+        
+        <tr>
+          
+          <td data-content="DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance(); dbf.setFeature(&quot;http://apache.org/xml/features/disallow-doctype-decl&quot;, true);">DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance(); dbf.setFeature(&quot;http://apache.org/xml/features/disallow-doctype-decl&quot;, true);</td>
+          
+          <td data-content="CWE-611">CWE-611</td>
+          
+          <td data-content="java/07_xxe_safe.java">java/07_xxe_safe.java</td>
+          
+          <td data-content="no">no</td>
+          
+          <td data-content="java">java</td>
+          
+          <td data-content="[PASS] (1.00, accuracy: 1.00)
+
+{&quot;is_vuln&quot;: &quot;no&quot;, &quot;cwe&quot;: null, &quot;title&quot;: &quot;XML External Entity (XXE) Prevention&quot;, &quot;rationale&quot;: &quot;The code explicitly sets the &#39;http://apache.org/xml/features/disallow-doctype-decl&#39; feature to &#39;true&#39;. This is a security hardening measure that prevents the processing of DOCTYPE declarations, effectively mitigating XML External Entity (XXE) injection vulnerabilities (CWE-611). This code snippet is not vulnerable; it is implementing a defense.&quot;}
+
+Pass Reason: All assertions passed">[PASS] (1.00, accuracy: 1.00)
+
+{&quot;is_vuln&quot;: &quot;no&quot;, &quot;cwe&quot;: null, &quot;title&quot;: &quot;XML External Entity (XXE) Prevention&quot;, &quot;rationale&quot;: &quot;The code explicitly sets the &#39;http://apache.org/xml/features/disallow-doctype-decl&#39; feature to &#39;true&#39;. This is a security hardening measure that prevents the processing of DOCTYPE declarations, effectively mitigating XML External Entity (XXE) injection vulnerabilities (CWE-611). This code snippet is not vulnerable; it is implementing a defense.&quot;}
+
+Pass Reason: All assertions passed</td>
+          
+        </tr>
+        
+        <tr>
+          
+          <td data-content="out.println(&quot;&lt;h1&gt;&quot;+request.getParameter(&quot;name&quot;)+&quot;&lt;/h1&gt;&quot;); // CWE-79">out.println(&quot;&lt;h1&gt;&quot;+request.getParameter(&quot;name&quot;)+&quot;&lt;/h1&gt;&quot;); // CWE-79</td>
+          
+          <td data-content="CWE-79">CWE-79</td>
+          
+          <td data-content="java/08_xss_java.java">java/08_xss_java.java</td>
+          
+          <td data-content="yes">yes</td>
+          
+          <td data-content="java">java</td>
+          
+          <td data-content="[PASS] (1.00, accuracy: 1.00)
+
+{&quot;is_vuln&quot;: &quot;yes&quot;, &quot;cwe&quot;: &quot;CWE-79&quot;, &quot;title&quot;: &quot;Reflected Cross-Site Scripting (XSS)&quot;, &quot;rationale&quot;: &quot;The application directly embeds user-controlled input from `request.getParameter(&#92;&quot;name&#92;&quot;)` into the HTML response without proper output encoding. An attacker can inject malicious scripts or HTML tags by providing specially crafted input, leading to client-side attacks such as session hijacking, defacement, or redirection.&quot;}
+
+Pass Reason: All assertions passed">[PASS] (1.00, accuracy: 1.00)
+
+{&quot;is_vuln&quot;: &quot;yes&quot;, &quot;cwe&quot;: &quot;CWE-79&quot;, &quot;title&quot;: &quot;Reflected Cross-Site Scripting (XSS)&quot;, &quot;rationale&quot;: &quot;The application directly embeds user-controlled input from `request.getParameter(&#92;&quot;name&#92;&quot;)` into the HTML response without proper output encoding. An attacker can inject malicious scripts or HTML tags by providing specially crafted input, leading to client-side attacks such as session hijacking, defacement, or redirection.&quot;}
+
+Pass Reason: All assertions passed</td>
+          
+        </tr>
+        
+      </tbody>
+    </table>
+  </body>
+</html>

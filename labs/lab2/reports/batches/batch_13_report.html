@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Lab 2 eval: Ultra-conservative config for Google AI Studio FREE TIER (15 RPM limit)</title>
+    <style>
+      body {
+        font-family:
+          -apple-system,
+          BlinkMacSystemFont,
+          Segoe UI,
+          Roboto,
+          Helvetica,
+          Arial,
+          sans-serif;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: left;
+        word-break: break-all;
+      }
+      th,
+      td {
+        padding: 5px;
+        min-width: 200px;
+        white-space: pre-wrap;
+        vertical-align: top;
+      }
+
+      tr > td[data-content^='[PASS]'] {
+        color: green;
+      }
+      tr > td[data-content^='[FAIL]'] {
+        color: #ad0000;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <thead>
+        
+        <th>code</th>
+        
+        <th>cwe_hint</th>
+        
+        <th>file</th>
+        
+        <th>label</th>
+        
+        <th>lang</th>
+        
+        <th>[gemini-batch-free] prompts/secure_review_chat.json: [{&quot;role&quot;:&quot;system&quot;,&quot;content&quot;:&quot;You are a strict security auditor. You must analyze code for vulnerabilities (OWASP/CWE). Your output MUST be a single, raw JSON object. NO backticks, NO &#39;json&#39; prefix, NO prose. If unsure or safe, set is_vuln to &#39;no&#39;. Schema: {&#92;&quot;is_vuln&#92;&quot;: &#92;&quot;yes&#92;&quot;|&#92;&quot;no&#92;&quot;, &#92;&quot;cwe&#92;&quot;: &#92;&quot;CWE-###&#92;&quot;|null, &#92;&quot;title&#92;&quot;: &#92;&quot;string&#92;&quot;, &#92;&quot;rationale&#92;&quot;: &#92;&quot;string&#92;&quot;}&quot;},{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;Analyze this code:&#92;n&lt;&lt;&lt;&#92;n{{code}}&#92;n&gt;&gt;&gt;&#92;n&#92;nRespond with the JSON object only:&quot;}]</th>
+        
+      </thead>
+      <tbody>
+        
+        <tr>
+          
+          <td data-content="MessageDigest md = MessageDigest.getInstance(&quot;MD5&quot;); md.digest(pwd.getBytes()); // CWE-327">MessageDigest md = MessageDigest.getInstance(&quot;MD5&quot;); md.digest(pwd.getBytes()); // CWE-327</td>
+          
+          <td data-content="CWE-327">CWE-327</td>
+          
+          <td data-content="java/05_hash_md5.java">java/05_hash_md5.java</td>
+          
+          <td data-content="yes">yes</td>
+          
+          <td data-content="java">java</td>
+          
+          <td data-content="[PASS] (1.00, accuracy: 1.00)
+
+{&quot;is_vuln&quot;: &quot;yes&quot;, &quot;cwe&quot;: &quot;CWE-327&quot;, &quot;title&quot;: &quot;Use of Broken Cryptographic Algorithm (MD5)&quot;, &quot;rationale&quot;: &quot;The code uses MD5 for hashing, which is a cryptographically broken algorithm. MD5 is known to be vulnerable to collision attacks and is not suitable for security-critical applications like password hashing. Modern applications should use strong, slow, salted hashing algorithms such as Argon2, scrypt, or bcrypt to protect passwords.&quot;}
+
+Pass Reason: All assertions passed">[PASS] (1.00, accuracy: 1.00)
+
+{&quot;is_vuln&quot;: &quot;yes&quot;, &quot;cwe&quot;: &quot;CWE-327&quot;, &quot;title&quot;: &quot;Use of Broken Cryptographic Algorithm (MD5)&quot;, &quot;rationale&quot;: &quot;The code uses MD5 for hashing, which is a cryptographically broken algorithm. MD5 is known to be vulnerable to collision attacks and is not suitable for security-critical applications like password hashing. Modern applications should use strong, slow, salted hashing algorithms such as Argon2, scrypt, or bcrypt to protect passwords.&quot;}
+
+Pass Reason: All assertions passed</td>
+          
+        </tr>
+        
+        <tr>
+          
+          <td data-content="DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance(); DocumentBuilder db = dbf.newDocumentBuilder(); db.parse(req.getInputStream()); // CWE-611">DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance(); DocumentBuilder db = dbf.newDocumentBuilder(); db.parse(req.getInputStream()); // CWE-611</td>
+          
+          <td data-content="CWE-611">CWE-611</td>
+          
+          <td data-content="java/06_xxe.java">java/06_xxe.java</td>
+          
+          <td data-content="yes">yes</td>
+          
+          <td data-content="java">java</td>
+          
+          <td data-content="[PASS] (1.00, accuracy: 1.00)
+
+{&quot;is_vuln&quot;: &quot;yes&quot;, &quot;cwe&quot;: &quot;CWE-611&quot;, &quot;title&quot;: &quot;XML External Entity (XXE) Injection&quot;, &quot;rationale&quot;: &quot;The code uses `DocumentBuilderFactory` to parse XML input directly from an untrusted source (`req.getInputStream()`) without explicitly disabling DTDs or external entity processing. By default, `DocumentBuilderFactory` implementations may process external entities, allowing an attacker to supply a specially crafted XML document containing external entity declarations. This can lead to information disclosure (e.g., reading local files), Server-Side Request Forgery (SSRF), or Denial of Service (DoS) attacks.&quot;}
+
+Pass Reason: All assertions passed">[PASS] (1.00, accuracy: 1.00)
+
+{&quot;is_vuln&quot;: &quot;yes&quot;, &quot;cwe&quot;: &quot;CWE-611&quot;, &quot;title&quot;: &quot;XML External Entity (XXE) Injection&quot;, &quot;rationale&quot;: &quot;The code uses `DocumentBuilderFactory` to parse XML input directly from an untrusted source (`req.getInputStream()`) without explicitly disabling DTDs or external entity processing. By default, `DocumentBuilderFactory` implementations may process external entities, allowing an attacker to supply a specially crafted XML document containing external entity declarations. This can lead to information disclosure (e.g., reading local files), Server-Side Request Forgery (SSRF), or Denial of Service (DoS) attacks.&quot;}
+
+Pass Reason: All assertions passed</td>
+          
+        </tr>
+        
+      </tbody>
+    </table>
+  </body>
+</html>
