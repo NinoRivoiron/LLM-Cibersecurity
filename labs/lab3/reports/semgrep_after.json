@@ -1,0 +1,85 @@
+{
+    "version": "1.146.0",
+    "results": [],
+    "errors": [],
+    "paths": {
+        "scanned": [
+            "/Users/nino/Desktop/llm-sec/labs/lab3/config/semgrep_rules.yml",
+            "/Users/nino/Desktop/llm-sec/labs/lab3/docker/Dockerfile",
+            "/Users/nino/Desktop/llm-sec/labs/lab3/k8s/deployment.yaml"
+        ]
+    },
+    "time": {
+        "rules": [],
+        "rules_parse_time": 0.025121212005615234,
+        "profiling_times": {
+            "config_time": 1.0558907985687256,
+            "core_time": 0.7335779666900635,
+            "ignores_time": 0.0001811981201171875,
+            "total_time": 1.8012008666992188
+        },
+        "parsing_time": {
+            "total_time": 0.0,
+            "per_file_time": {
+                "mean": 0.0,
+                "std_dev": 0.0
+            },
+            "very_slow_stats": {
+                "time_ratio": 0.0,
+                "count_ratio": 0.0
+            },
+            "very_slow_files": []
+        },
+        "scanning_time": {
+            "total_time": 0.061096906661987305,
+            "per_file_time": {
+                "mean": 0.02036563555399577,
+                "std_dev": 6.141213033414614e-07
+            },
+            "very_slow_stats": {
+                "time_ratio": 0.0,
+                "count_ratio": 0.0
+            },
+            "very_slow_files": []
+        },
+        "matching_time": {
+            "total_time": 0.0,
+            "per_file_and_rule_time": {
+                "mean": 0.0,
+                "std_dev": 0.0
+            },
+            "very_slow_stats": {
+                "time_ratio": 0.0,
+                "count_ratio": 0.0
+            },
+            "very_slow_rules_on_files": []
+        },
+        "tainting_time": {
+            "total_time": 0.0,
+            "per_def_and_rule_time": {
+                "mean": 0.0,
+                "std_dev": 0.0
+            },
+            "very_slow_stats": {
+                "time_ratio": 0.0,
+                "count_ratio": 0.0
+            },
+            "very_slow_rules_on_defs": []
+        },
+        "fixpoint_timeouts": [],
+        "prefiltering": {
+            "project_level_time": 0.0,
+            "file_level_time": 0.0,
+            "rules_with_project_prefilters_ratio": 0.0,
+            "rules_with_file_prefilters_ratio": 0.29411764705882354,
+            "rules_selected_ratio": 0.8823529411764706,
+            "rules_matched_ratio": 0.8823529411764706
+        },
+        "targets": [],
+        "total_bytes": 0,
+        "max_memory_bytes": 130904064
+    },
+    "engine_requested": "OSS",
+    "skipped_rules": [],
+    "profiling_results": []
+}

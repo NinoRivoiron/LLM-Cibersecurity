@@ -1,0 +1,2 @@
+promptIdx,TP,FP,TN,FN,Errors,Precision,Recall,F1
+0,17,1,5,2,5,0.944,0.895,0.919
